@@ -1,0 +1,42 @@
+BASE <http://hl7.org/fhir/shape/>
+PREFIX fhir: <http://hl7.org/fhir/>
+PREFIX fhirvs: <http://hl7.org/fhir/ValueSet/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+<Element> CLOSED {
+    fhir:id xsd:string?; 
+  # fhir:extension @<Extension>*;
+}
+
+<Quantity> EXTENDS @<Element> CLOSED {
+    fhir:value @<decimal>?;
+    fhir:comparator @<code> AND
+    	{fhir:value @fhirvs:quantity-comparator}?;
+    fhir:unit @<string>?;
+    fhir:system @<uri>?;
+    fhir:code @<code>?;
+}
+
+<Age> @<Quantity>
+  AND ( { fhir:code . } OR NOT { fhir:value . } )
+  AND ( NOT { fhir:system . } OR { fhir:system ["http://ucum.org/ucum"] } )
+  AND ( NOT { fhir:value . } OR { fhir:value NOT { fhir:v . } } OR { fhir:value { fhir:v /^\.?0*\.?[1-9]/ } } )
+
+<code> EXTENDS @<Element> CLOSED {
+    fhir:v xsd:token?;
+}
+
+<uri> EXTENDS @<Element> CLOSED {
+    fhir:v xsd:anyURI?;
+}
+
+<string> EXTENDS @<Element> CLOSED {
+    fhir:v xsd:string MAXLENGTH 1048576?;
+}
+
+<decimal> EXTENDS @<Element> CLOSED {
+    fhir:v xsd:decimal OR xsd:double?;
+}
+
+# How the Quantity should be understood and represented.
+fhirvs:quantity-comparator ["<" "<=" ">=" ">" "ad"]

@@ -1,0 +1,41 @@
+# load manifest for ShEx
+#   shex-simple: http://shex.io/webapps/shex.js/doc/shex-simple?manifestURL=//fhircat.github.io/FHIR-ShEx-manifests/-fhir-constraints.yaml
+---
+- schemaLabel: Age constraints
+  schemaURL: Age-constraints.shex
+  dataLabel: good
+  dataURL: Age-constraints-good.ttl
+  queryMap: |
+    <pass0>@<Age>,
+    <pass1>@<Age>,
+    <pass2>@<Age>,
+    <pass3>@<Age>
+
+- schemaLabel: Age constraints
+  schemaURL: Age-constraints.shex
+  dataLabel: bad
+  dataURL: Age-constraints-bad.ttl
+  queryMap: |
+    <fail1>@!<Age>,
+    <fail2>@!<Age>,
+    <fail3>@!<Age>,
+    <fail4>@!<Age>,
+    <fail5>@!<Age>,
+    <fail6>@!<Age>
+
+- schemaLabel: Attachment constraints
+  schemaURL: Attachment-constraints.shex
+  dataLabel: good
+  dataURL: Attachment-constraints-good.ttl
+  queryMap: |
+    <pass0>@<Attachment>,
+    <pass1>@<Attachment>,
+    <pass2>@<Attachment>
+
+- schemaLabel: Attachment constraints
+  schemaURL: Attachment-constraints.shex
+  dataLabel: bad
+  dataURL: Attachment-constraints-bad.ttl
+  queryMap: |
+    <fail1>@!<Attachment>
+

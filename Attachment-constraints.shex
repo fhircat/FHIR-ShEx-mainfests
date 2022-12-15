@@ -1,0 +1,27 @@
+BASE <http://hl7.org/fhir/shape/>
+PREFIX fhir: <http://hl7.org/fhir/>
+PREFIX fhirvs: <http://hl7.org/fhir/ValueSet/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+<Element> CLOSED {
+    fhir:id xsd:string?; 
+  # fhir:extension @<Extension>*;
+}
+
+<Attachment> EXTENDS @<Element> CLOSED {
+    fhir:contentType @<code>?;
+    fhir:data @<base64Binary>?;
+} AND ( NOT { fhir:data . } OR { fhir:contentType . } )
+
+<code> EXTENDS @<Element> CLOSED {
+    fhir:v xsd:token?;
+}
+
+<base64Binary> EXTENDS @<Element> CLOSED {
+    fhir:v xsd:base64Binary?; 
+}
+
+<string> EXTENDS @<Element> CLOSED {
+    fhir:v xsd:string MAXLENGTH 1048576?;
+}
+

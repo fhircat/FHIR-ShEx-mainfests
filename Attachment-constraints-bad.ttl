@@ -1,0 +1,6 @@
+PREFIX fhir: <http://hl7.org/fhir/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+<fail1>
+  fhir:data [ fhir:v "QXR0YWNobWVudDE="^^xsd:base64Binary ] .
+

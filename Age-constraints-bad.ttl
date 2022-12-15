@@ -1,0 +1,21 @@
+PREFIX fhir: <http://hl7.org/fhir/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+<fail1> fhir:value [ fhir:v 55.0 ] .
+<fail2> fhir:system "http://ucum.org/ucum999"^^<http://www.w3.org/2001/XMLSchema#anyURI> .
+<fail3> fhir:code [
+    fhir:value "http://a.example/"^^<http://www.w3.org/2001/XMLSchema#token>
+  ] ;
+  fhir:value [ fhir:v 55 ] .
+<fail4> fhir:code [
+    fhir:value "http://a.example/"^^<http://www.w3.org/2001/XMLSchema#token>
+  ] ;
+  fhir:value [ fhir:v -55.0 ] .
+<fail5> fhir:code [
+    fhir:value "http://a.example/"^^<http://www.w3.org/2001/XMLSchema#token>
+  ] ;
+  fhir:value [ fhir:v -55 ] .
+<fail6> fhir:code [
+    fhir:value "http://a.example/"^^<http://www.w3.org/2001/XMLSchema#token>
+  ] ;
+  fhir:value [ fhir:v 0 ] .
