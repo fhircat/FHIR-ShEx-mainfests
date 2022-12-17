@@ -24,4 +24,3 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 <string> EXTENDS @<Element> CLOSED {
     fhir:v xsd:string MAXLENGTH 1048576?;
 }
-

@@ -1,12 +1,11 @@
 PREFIX fhir: <http://hl7.org/fhir/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-<pass0> fhir:id "Attachment1" .
-<pass1> fhir:contentType [
-    fhir:value "text/plain"^^<http://www.w3.org/2001/XMLSchema#token>
+<id> fhir:id "Attachment1" . # no data, no contentType
+<1-_data-contentType> fhir:contentType [
+    fhir:v "text/plain"^^<http://www.w3.org/2001/XMLSchema#token>
   ] .
-<pass2> fhir:contentType [
-    fhir:value "text/plain"^^<http://www.w3.org/2001/XMLSchema#token>
+<1-data-contentType> fhir:contentType [
+    fhir:v "text/plain"^^<http://www.w3.org/2001/XMLSchema#token>
   ] ;
   fhir:data [ fhir:v "QXR0YWNobWVudDE="^^xsd:base64Binary ] .
-

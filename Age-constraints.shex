@@ -19,7 +19,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 <Age> @<Quantity>
   AND ( { fhir:code . } OR NOT { fhir:value . } )
-  AND ( NOT { fhir:system . } OR { fhir:system ["http://ucum.org/ucum"] } )
+  AND ( NOT { fhir:system . } OR { fhir:system { fhir:v ["http://ucum.org/ucum"^^<http://www.w3.org/2001/XMLSchema#anyURI>] } } )
   AND ( NOT { fhir:value . } OR { fhir:value NOT { fhir:v . } } OR { fhir:value { fhir:v /^\.?0*\.?[1-9]/ } } )
 
 <code> EXTENDS @<Element> CLOSED {
