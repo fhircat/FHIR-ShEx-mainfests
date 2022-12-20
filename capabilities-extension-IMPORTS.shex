@@ -18,7 +18,7 @@ IMPORT <datatypes.shex>
   };
   fhir:rest EXTENDS @<BackboneElement> CLOSED {
     fhir:security EXTENDS @<BackboneElement> {
-      fhir:extension @<capabilities>?;
+      fhir:extension @<capabilities>?; # locus of use in CS.rest.security
       fhir:cors @<boolean>?
     }
   }
