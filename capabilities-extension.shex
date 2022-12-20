@@ -1,0 +1,97 @@
+PREFIX fhir: <http://hl7.org/fhir/>
+PREFIX fhirvs: <http://hl7.org/fhir/ValueSet/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# http://build.fhir.org/types
+<Base> CLOSED {  }
+
+<Element> EXTENDS @<Base> CLOSED {
+  fhir:id xsd:string?;
+  fhir:extension @<unknownExtension>*;
+}
+
+<DataType> EXTENDS @<Element> CLOSED {
+}
+
+<BackboneElement> EXTENDS @<Element> CLOSED {
+  fhir:modifierExtension @<unknownExtension>*;
+}
+
+<Resource> EXTENDS @<Base> CLOSED {
+  fhir:id xsd:string?;
+}
+
+<DomainResource> EXTENDS @<Resource> CLOSED {
+  fhir:extension @<unknownExtension>*;
+  fhir:modifierExtension @<unknownExtension>*;
+}
+
+# Model a resource with a nested extension
+<CapabilityStatementShape> EXTENDS @<DomainResource> CLOSED {
+  a [fhir:CapabilityStatement];
+  fhir:status @<code> AND {
+    fhir:v [
+      "draft"^^xsd:token
+      "active"^^xsd:token
+      "retired"^^xsd:token
+      "unknown"^^xsd:token
+    ]
+  };
+  fhir:rest EXTENDS @<BackboneElement> CLOSED {
+    fhir:security EXTENDS @<BackboneElement> {
+      fhir:extension @<capabilities>?;
+      fhir:cors @<boolean>?
+    }
+  }
+}
+
+# http://build.fhir.org/datatypes
+<code> EXTENDS @<DataType> CLOSED {
+  fhir:v xsd:token?;
+}
+
+<uri> EXTENDS @<DataType> CLOSED {
+  fhir:v xsd:anyURI?;
+}
+
+<string> EXTENDS @<DataType> CLOSED {
+  fhir:v xsd:string MAXLENGTH 1048576?;
+}
+
+<decimal> EXTENDS @<DataType> CLOSED { # not used here
+  fhir:v xsd:decimal OR xsd:double?;
+}
+
+<boolean> EXTENDS @<DataType> CLOSED {
+  fhir:v xsd:boolean
+}
+
+# Extensions
+<Extension> EXTENDS @<DataType> CLOSED {
+  fhir:id @<string>?;
+  fhir:extension @<Extension>*;
+  fhir:url @<uri>;
+  fhir:value @<code> OR @<string> OR @<boolean>?;
+}
+
+<capabilities> EXTENDS @<Extension> {} AND {
+  fhir:url { fhir:v ["http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities"^^xsd:anyURI] } ;
+  fhir:value { fhir:v ["launch-ehr" "launch-standalone"] } ;
+  ^fhir:extension {
+    ^fhir:security {
+      # ^fhir:rest @<CapabilityStatementShape> # more expensive (depending on cache)
+      ^fhir:rest {
+        a [fhir:CapabilityStatement] # cheaper to just examine type
+      }
+    }
+  }
+}
+
+<unknownExtension> @<Extension> AND NOT {
+  fhir:url {
+    fhir:v [
+      "http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities"^^xsd:anyURI
+      # more known extensions
+    ]
+  }
+}

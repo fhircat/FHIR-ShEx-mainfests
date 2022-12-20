@@ -45,3 +45,17 @@
   queryMap: |
     <1-data-_contentType>@!<Attachment>
 
+- schemaLabel: nested extension (capabilities)
+  schemaURL: capabilities-extension.shex
+  dataLabel: as IRIs
+  dataURL: capabilities-extension-IRIs.ttl
+  queryMap: |
+    <cs1>@<CapabilityStatementShape>
+
+- schemaLabel: nested extension (capabilities)
+  schemaURL: capabilities-extension.shex
+  dataLabel: as BNodes
+  dataURL: capabilities-extension-BNodes.ttl
+  queryMap: |
+    <cs1>@<CapabilityStatementShape>
+

@@ -1,0 +1,20 @@
+PREFIX fhir: <http://hl7.org/fhir/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+<cs1> a fhir:CapabilityStatement ;
+  fhir:extension <miscExt> ;
+  fhir:status [ fhir:v "active"^^xsd:token ] ;
+  fhir:rest [
+    fhir:extension <miscExt> ;
+    fhir:security [
+      fhir:extension <miscExt> ;
+      fhir:extension <capExt> ; # <capExt> is only allowed here
+      fhir:cors [ fhir:v true ]
+    ]
+  ] .
+
+<capExt> fhir:url [ fhir:v "http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities"^^xsd:anyURI ] ;
+  fhir:value [ fhir:v "launch-standalone" ] .
+
+<miscExt> fhir:url [ fhir:v "http://other.example/url"^^xsd:anyURI ] ;
+  fhir:value [ fhir:v true ] .
