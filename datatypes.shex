@@ -1,0 +1,26 @@
+PREFIX fhir: <http://hl7.org/fhir/>
+PREFIX fhirvs: <http://hl7.org/fhir/ValueSet/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+IMPORT <types.shex>
+
+# http://build.fhir.org/datatypes
+<code> EXTENDS @<DataType> CLOSED {
+  fhir:v xsd:token?;
+}
+
+<uri> EXTENDS @<DataType> CLOSED {
+  fhir:v xsd:anyURI?;
+}
+
+<string> EXTENDS @<DataType> CLOSED {
+  fhir:v xsd:string MAXLENGTH 1048576?;
+}
+
+<decimal> EXTENDS @<DataType> CLOSED { # not used here
+  fhir:v xsd:decimal OR xsd:double?;
+}
+
+<boolean> EXTENDS @<DataType> CLOSED {
+  fhir:v xsd:boolean
+}

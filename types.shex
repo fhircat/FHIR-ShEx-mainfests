@@ -1,0 +1,27 @@
+PREFIX fhir: <http://hl7.org/fhir/>
+PREFIX fhirvs: <http://hl7.org/fhir/ValueSet/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# http://build.fhir.org/types
+<Base> CLOSED {  }
+
+<Element> EXTENDS @<Base> CLOSED {
+  fhir:id xsd:string?;
+  fhir:extension @<unknownExtension>*;
+}
+
+<DataType> EXTENDS @<Element> CLOSED {
+}
+
+<BackboneElement> EXTENDS @<Element> CLOSED {
+  fhir:modifierExtension @<unknownExtension>*;
+}
+
+<Resource> EXTENDS @<Base> CLOSED {
+  fhir:id xsd:string?;
+}
+
+<DomainResource> EXTENDS @<Resource> CLOSED {
+  fhir:extension @<unknownExtension>*;
+  fhir:modifierExtension @<unknownExtension>*;
+}

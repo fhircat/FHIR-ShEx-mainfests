@@ -59,3 +59,10 @@
   queryMap: |
     <cs1>@<CapabilityStatementShape>
 
+- schemaLabel: nested extension (capabilities) with IMPORTS
+  schemaURL: capabilities-extension-IMPORTS.shex
+  dataLabel: as IRIs
+  dataURL: capabilities-extension-IRIs.ttl
+  queryMap: |
+    <cs1>@<CapabilityStatementShape>
+
