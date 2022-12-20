@@ -1,15 +1,18 @@
 PREFIX fhir: <http://hl7.org/fhir/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-<pass0> fhir:id "Age1" .
-<pass1> fhir:code [
-    fhir:value "http://a.example/"^^<http://www.w3.org/2001/XMLSchema#token>
+<id> fhir:id "Age1" . # no code, no system, no value
+<1-code-value> fhir:code [
+    fhir:v "http://a.example/"^^<http://www.w3.org/2001/XMLSchema#token>
   ] ;
   fhir:value [ fhir:v 55.0 ] .
-<pass2> fhir:code [
-    fhir:value "http://a.example/"^^<http://www.w3.org/2001/XMLSchema#token>
+<1-code-_value> fhir:code [
+    fhir:v "http://a.example/"^^<http://www.w3.org/2001/XMLSchema#token>
   ] .
-<pass3> fhir:code [
-    fhir:system "http://ucum.org/ucum"^^<http://www.w3.org/2001/XMLSchema#anyURI>
+<2-system.v> fhir:system [
+    fhir:v "http://ucum.org/ucum"^^<http://www.w3.org/2001/XMLSchema#anyURI>
   ] .
-
+<3-value._v> fhir:code [
+    fhir:v "http://a.example/"^^<http://www.w3.org/2001/XMLSchema#token>
+  ] ;
+  fhir:value [  ] .
