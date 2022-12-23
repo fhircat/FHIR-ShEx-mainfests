@@ -8,11 +8,13 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     fhir:extension [ fhir:url <miscUrl> ; fhir:value [ fhir:v "launch-standalone" ] ] ;
     fhir:security [
       fhir:extension [ fhir:url <miscUrl> ; fhir:value [ fhir:v "launch-standalone" ] ] ;
+
       # <capExt> is only allowed here
       fhir:extension [ fhir:url <capUrl> ; fhir:value [ fhir:v "launch-standalone" ] ] ;
       fhir:cors [ fhir:v true ]
     ]
   ] .
 
+# Factored out capabilities and misc extension URLs for terseness.
 <capUrl> fhir:v "http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities"^^xsd:anyURI .
 <miscUrl> fhir:v "http://other.example/url"^^xsd:anyURI .
