@@ -4,6 +4,29 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 IMPORT <types.shex>
 
+/**
+ * Base of all Extensions, including unknownExtensions, if the schema was generated with them
+ */
+ABSTRACT <Extension> EXTENDS @<DataType> CLOSED {
+  fhir:id @<string>?;
+  fhir:extension @<Extension>*;
+  fhir:url @<uri> AND { fhir:v . }; # If this isn't a constraint on Extension, it should be. -- ericP
+  fhir:value (
+    @<code>
+    OR @<uri>
+    OR @<string>
+    OR @<decimal>
+    OR @<boolean>
+    OR @<Age>
+  ) AND { a . }?; # Extension.value is polymorphic so it MUST have a type.
+}
+
+/**
+ * An extension can either be an unknownExtension or something that EXTENDS @<Extension>
+ * listOfKnownExtension MUST be supplied in some loaded schema.
+ */
+<unknownExtension> EXTENDS @<Extension> {} AND NOT @<listOfKnownExtension>
+
 # http://build.fhir.org/datatypes
 <code> EXTENDS @<DataType> CLOSED {
   a [fhir:code]?;
@@ -30,21 +53,22 @@ IMPORT <types.shex>
   fhir:v xsd:boolean
 }
 
-ABSTRACT <Extension> EXTENDS @<DataType> CLOSED {
-  fhir:id @<string>?;
-  fhir:extension @<Extension>*;
-  fhir:url @<uri> AND { fhir:v . }; # If this isn't a constraint on Extension, it should be. -- ericP
-  fhir:value (
-    @<code>
-    OR @<uri>
-    OR @<string>
-    OR @<decimal>
-    OR @<boolean>
-  ) AND { a . }?; # Extension.value is polymorphic so it MUST have a type.
+<Quantity> EXTENDS @<Element> CLOSED {
+  a [fhir:Quantity]?;
+  fhir:value @<decimal>?;
+  fhir:comparator @<code> AND
+  	{fhir:value @fhirvs:quantity-comparator}?;
+  fhir:unit @<string>?;
+  fhir:system @<uri>?;
+  fhir:code @<code>?;
 }
 
-/**
- * An extension can either be an unknownExtension or something that EXTENDS @<Extension>
- * listOfKnownExtension MUST be supplied in some loaded schema.
- */
-<unknownExtension> EXTENDS @<Extension> {} AND NOT @<listOfKnownExtension>
+# How the Quantity should be understood and represented.
+fhirvs:quantity-comparator ["<" "<=" ">=" ">" "ad"]
+
+<Age> EXTENDS @<Quantity> {
+  a [fhir:Age]?;
+}
+  AND ( { fhir:code . } OR NOT { fhir:value . } )
+  AND ( NOT { fhir:system . } OR { fhir:system { fhir:v ["http://ucum.org/ucum"^^<http://www.w3.org/2001/XMLSchema#anyURI>] } } )
+  AND ( NOT { fhir:value . } OR { fhir:value NOT { fhir:v . } } OR { fhir:value { fhir:v /^\.?0*\.?[1-9]/ } } )

@@ -9,15 +9,18 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 }
 
 <Quantity> EXTENDS @<Element> CLOSED {
-    fhir:value @<decimal>?;
-    fhir:comparator @<code> AND
-    	{fhir:value @fhirvs:quantity-comparator}?;
-    fhir:unit @<string>?;
-    fhir:system @<uri>?;
-    fhir:code @<code>?;
+  a [fhir:Quantity]?;
+  fhir:value @<decimal>?;
+  fhir:comparator @<code> AND
+  	{fhir:value @fhirvs:quantity-comparator}?;
+  fhir:unit @<string>?;
+  fhir:system @<uri>?;
+  fhir:code @<code>?;
 }
 
-<Age> @<Quantity>
+<Age> EXTENDS @<Quantity> {
+  a [fhir:Age]?;
+}
   AND ( { fhir:code . } OR NOT { fhir:value . } )
   AND ( NOT { fhir:system . } OR { fhir:system { fhir:v ["http://ucum.org/ucum"^^<http://www.w3.org/2001/XMLSchema#anyURI>] } } )
   AND ( NOT { fhir:value . } OR { fhir:value NOT { fhir:v . } } OR { fhir:value { fhir:v /^\.?0*\.?[1-9]/ } } )
