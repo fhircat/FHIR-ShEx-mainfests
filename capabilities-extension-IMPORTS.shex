@@ -19,14 +19,13 @@ IMPORT <datatypes.shex>
   };
   fhir:rest EXTENDS @<BackboneElement> CLOSED {
     fhir:security EXTENDS @<BackboneElement> {
-      fhir:extension @<capabilities>?; # locus of use in CS.rest.security
       fhir:cors @<boolean>?
     }
   }
 }
 
 # Extensions
-<Extension> EXTENDS @<DataType> CLOSED {
+ABSTRACT <Extension> EXTENDS @<DataType> CLOSED {
   fhir:id @<string>?;
   fhir:extension @<Extension>*;
   fhir:url @<uri>;
@@ -36,21 +35,22 @@ IMPORT <datatypes.shex>
 <capabilities> EXTENDS @<Extension> {} AND {
   fhir:url { fhir:v ["http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities"^^xsd:anyURI] } ;
   fhir:value { fhir:v ["launch-ehr" "launch-standalone"] } ;
-  ^fhir:extension {
-    ^fhir:security {
-      # ^fhir:rest @<CapabilityStatementShape> # more expensive (depending on cache)
-      ^fhir:rest {
-        a [fhir:CapabilityStatement] # cheaper to just examine type
-      }
+ ^fhir:extension {
+   ^fhir:security {
+     ^fhir:rest
+        # @<CapabilityStatementShape> # more expensive (depending on cache)
+        { a [fhir:CapabilityStatement] } # cheaper to just examine type
     }
   }
 }
 
-<unknownExtension> @<Extension> AND NOT {
+<unknownExtension> EXTENDS @<Extension> {} AND NOT @<knownExtension>
+
+<knownExtension> {
   fhir:url {
     fhir:v [
       "http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities"^^xsd:anyURI
-      # more known extensions
+      # more known extensions…
     ]
   }
 }

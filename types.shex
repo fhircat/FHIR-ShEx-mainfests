@@ -7,14 +7,14 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 <Element> EXTENDS @<Base> CLOSED {
   fhir:id xsd:string?;
-  fhir:extension @<unknownExtension>*;
+  fhir:extension @<Extension>*;
 }
 
 <DataType> EXTENDS @<Element> CLOSED {
 }
 
 <BackboneElement> EXTENDS @<Element> CLOSED {
-  fhir:modifierExtension @<unknownExtension>*;
+  fhir:modifierExtension @<Extension>*;
 }
 
 <Resource> EXTENDS @<Base> CLOSED {
@@ -22,6 +22,6 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 }
 
 <DomainResource> EXTENDS @<Resource> CLOSED {
-  fhir:extension @<unknownExtension>*;
-  fhir:modifierExtension @<unknownExtension>*;
+  fhir:extension @<Extension>*;
+  fhir:modifierExtension @<Extension>*;
 }

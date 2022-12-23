@@ -7,14 +7,14 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 <Element> EXTENDS @<Base> CLOSED {
   fhir:id xsd:string?;
-  fhir:extension @<unknownExtension>*;
+  fhir:extension @<Extension>*;
 }
 
 <DataType> EXTENDS @<Element> CLOSED {
 }
 
 <BackboneElement> EXTENDS @<Element> CLOSED {
-  fhir:modifierExtension @<unknownExtension>*;
+  fhir:modifierExtension @<Extension>*;
 }
 
 <Resource> EXTENDS @<Base> CLOSED {
@@ -22,8 +22,8 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 }
 
 <DomainResource> EXTENDS @<Resource> CLOSED {
-  fhir:extension @<unknownExtension>*;
-  fhir:modifierExtension @<unknownExtension>*;
+  fhir:extension @<Extension>*;
+  fhir:modifierExtension @<Extension>*;
 }
 
 # Model a resource with a nested extension
@@ -39,7 +39,6 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   };
   fhir:rest EXTENDS @<BackboneElement> CLOSED {
     fhir:security EXTENDS @<BackboneElement> {
-      fhir:extension @<capabilities>?; # locus of use in CS.rest.security
       fhir:cors @<boolean>?
     }
   }
@@ -67,7 +66,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 }
 
 # Extensions
-<Extension> EXTENDS @<DataType> CLOSED {
+ABSTRACT <Extension> EXTENDS @<DataType> CLOSED {
   fhir:id @<string>?;
   fhir:extension @<Extension>*;
   fhir:url @<uri>;
@@ -77,21 +76,22 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 <capabilities> EXTENDS @<Extension> {} AND {
   fhir:url { fhir:v ["http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities"^^xsd:anyURI] } ;
   fhir:value { fhir:v ["launch-ehr" "launch-standalone"] } ;
-  ^fhir:extension {
-    ^fhir:security {
-      # ^fhir:rest @<CapabilityStatementShape> # more expensive (depending on cache)
-      ^fhir:rest {
-        a [fhir:CapabilityStatement] # cheaper to just examine type
-      }
+ ^fhir:extension {
+   ^fhir:security {
+     ^fhir:rest
+        # @<CapabilityStatementShape> # more expensive (depending on cache)
+        { a [fhir:CapabilityStatement] } # cheaper to just examine type
     }
   }
 }
 
-<unknownExtension> @<Extension> AND NOT {
+<unknownExtension> EXTENDS @<Extension> {} AND NOT @<knownExtension>
+
+<knownExtension> {
   fhir:url {
     fhir:v [
       "http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities"^^xsd:anyURI
-      # more known extensions
+      # more known extensions…
     ]
   }
 }
