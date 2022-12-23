@@ -6,21 +6,45 @@ IMPORT <types.shex>
 
 # http://build.fhir.org/datatypes
 <code> EXTENDS @<DataType> CLOSED {
+  a [fhir:code]?;
   fhir:v xsd:token?;
 }
 
 <uri> EXTENDS @<DataType> CLOSED {
+  a [fhir:uri]?;
   fhir:v xsd:anyURI?;
 }
 
 <string> EXTENDS @<DataType> CLOSED {
+  a [fhir:string]?;
   fhir:v xsd:string MAXLENGTH 1048576?;
 }
 
 <decimal> EXTENDS @<DataType> CLOSED { # not used here
+  a [fhir:decimal]?;
   fhir:v xsd:decimal OR xsd:double?;
 }
 
 <boolean> EXTENDS @<DataType> CLOSED {
+  a [fhir:boolean]?;
   fhir:v xsd:boolean
 }
+
+ABSTRACT <Extension> EXTENDS @<DataType> CLOSED {
+  fhir:id @<string>?;
+  fhir:extension @<Extension>*;
+  fhir:url @<uri> AND { fhir:v . }; # If this isn't a constraint on Extension, it should be. -- ericP
+  fhir:value (
+    @<code>
+    OR @<uri>
+    OR @<string>
+    OR @<decimal>
+    OR @<boolean>
+  ) AND { a . }?; # Extension.value is polymorphic so it MUST have a type.
+}
+
+/**
+ * An extension can either be an unknownExtension or something that EXTENDS @<Extension>
+ * listOfKnownExtension MUST be supplied in some loaded schema.
+ */
+<unknownExtension> EXTENDS @<Extension> {} AND NOT @<listOfKnownExtension>

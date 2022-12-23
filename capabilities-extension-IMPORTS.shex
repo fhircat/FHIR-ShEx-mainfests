@@ -6,7 +6,9 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 IMPORT <types.shex>
 IMPORT <datatypes.shex>
 
-# Model a resource with a nested extension
+/**
+ * Resource definitions
+ */
 <CapabilityStatementShape> EXTENDS @<DomainResource> CLOSED {
   a [fhir:CapabilityStatement];
   fhir:status @<code> AND {
@@ -24,33 +26,32 @@ IMPORT <datatypes.shex>
   }
 }
 
-# Extensions
-ABSTRACT <Extension> EXTENDS @<DataType> CLOSED {
-  fhir:id @<string>?;
-  fhir:extension @<Extension>*;
-  fhir:url @<uri>;
-  fhir:value @<code> OR @<string> OR @<boolean>?;
-}
-
+/**
+ * Extension definitions
+ */
 <capabilities> EXTENDS @<Extension> {} AND {
   fhir:url { fhir:v ["http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities"^^xsd:anyURI] } ;
-  fhir:value { fhir:v ["launch-ehr" "launch-standalone"] } ;
+  fhir:value @<code> AND { fhir:v ["launch-ehr"^^xsd:token "launch-standalone"^^xsd:token] } ;
  ^fhir:extension {
-   ^fhir:security {
-     ^fhir:rest
-        # @<CapabilityStatementShape> # more expensive (depending on cache)
-        { a [fhir:CapabilityStatement] } # cheaper to just examine type
-    }
+    # List of non-root contexts
+    ^fhir:security { ^fhir:rest { a [fhir:CapabilityStatement] } }
+  | ^fhir:y { ^fhir:x { a [fhir:Foo] } }
+  | a [
+      # List of Resources where <capabilities> are allowed in Root
+      fhir:Bar
+      fhir:Baz
+    ]
   }
 }
 
-<unknownExtension> EXTENDS @<Extension> {} AND NOT @<knownExtension>
-
-<knownExtension> {
+/**
+ * Enumeration of defined Extensions to force more specific validation
+ */
+<listOfKnownExtension> {
   fhir:url {
     fhir:v [
+      # List of extension URLs
       "http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities"^^xsd:anyURI
-      # more known extensions…
     ]
   }
 }
